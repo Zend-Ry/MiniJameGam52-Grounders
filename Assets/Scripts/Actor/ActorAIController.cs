@@ -6,11 +6,12 @@ enum SearchState
 {
     Idle,
     Blind,
-    Noise
+    Noise,
+    NotIt
 }
 
 [RequireComponent(typeof(ActorAnimationController))]
-public class ActorController : MonoBehaviour
+public class ActorController : Controller
 {
     private List<Transform> _actors;
     SearchState _searchState = SearchState.Idle;
@@ -94,11 +95,6 @@ public class ActorController : MonoBehaviour
 
     
     // Blind Search state methods
-    void EndBlindSearch()
-    {
-        Debug.Log("Blind search ended, switching to path search");
-        //_searchState = SearchState.Path;
-    }
     Vector3 GetRandomPointInBlindRadius()
     {
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
@@ -113,6 +109,10 @@ public class ActorController : MonoBehaviour
     // Noise Search state methods
     void GetNoiseWithinRadius()
     {
+        // Get a list of all noise sources within the noiseHeardRadius and move towards the closest one
+        // TODO: Change to NoiseMaker class
+        List<NoiseMaker> noiseSources = new List<NoiseMaker>();
+        
         
     }
 
