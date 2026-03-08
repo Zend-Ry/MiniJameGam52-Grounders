@@ -35,7 +35,7 @@ namespace Unity.FPS.Gameplay
             
             _mMoveAction = InputSystem.actions.FindAction("Player/Move");    
             _mJumpAction = InputSystem.actions.FindAction("Player/Jump");    
-            _mGrounders = InputSystem.actions.FindAction("Player/RightHand");
+            _mGrounders = InputSystem.actions.FindAction("Player/Grounders");
             
             // Favorites Menu
             
@@ -49,66 +49,41 @@ namespace Unity.FPS.Gameplay
             
         }
         
-        public bool CanProcessInput()
-        {
-            //return Cursor.lockState == CursorLockMode.Locked && !_mGameFlowManager.GameIsEnding;
-            return false;
-        }
+        //public bool CanProcessInput()
+        //{
+        //    //return Cursor.lockState == CursorLockMode.Locked && !_mGameFlowManager.GameIsEnding;
+        //    return false;
+        //}
 
         
         // Movement Interactions
-        public Vector3 GetMoveInput()
+        public Vector2 GetMoveInput()
         {
-            if (CanProcessInput())
-            {
-                var input = _mMoveAction.ReadValue<Vector2>();
-                Vector3 move = new Vector3(input.x, 0f, input.y);
+            var input = _mMoveAction.ReadValue<Vector2>();
+            Vector2 move = new Vector2(input.x, input.y);
 
-                // constrain move input to a maximum magnitude of 1, otherwise diagonal movement might exceed the max move speed defined
-                move = Vector3.ClampMagnitude(move, 1);
+            // constrain move input to a maximum magnitude of 1, otherwise diagonal movement might exceed the max move speed defined
+            move = Vector2.ClampMagnitude(move, 1);
 
-                return move;
-            }
-
-            return Vector3.zero;
+            return move;
         }
         
         public bool GetJumpInputDown()
         {
-            if (CanProcessInput())
-            {
-                return _mJumpAction.WasPressedThisFrame();
-            }
-
-            return false;
+            return _mJumpAction.WasPressedThisFrame();
         }
         public bool GetJumpInputHeld()
         {
-            if (CanProcessInput())
-            {
-                return _mJumpAction.IsPressed();
-            }
-
-            return false;
+            return _mJumpAction.IsPressed();
         }
         public bool GetJumpInputReleased()
         {
-            if (CanProcessInput())
-            {
-                return _mJumpAction.WasReleasedThisFrame();
-            }
-
-            return false;
+            return _mJumpAction.WasReleasedThisFrame();
         }
 
         public bool GetGroundersInput()
         {
-            if (CanProcessInput())
-            {
-                return _mGrounders.IsPressed();
-            }
-
-            return false;
+            return _mGrounders.IsPressed();
         }
     }
 }
