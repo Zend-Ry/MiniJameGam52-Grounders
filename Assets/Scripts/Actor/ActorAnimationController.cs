@@ -15,19 +15,24 @@ public class ActorAnimationController : MonoBehaviour
     private float _animationTimer = 0f;
     private int _animationIndex = 0;
 
-    PlayerInputHandler playerInput;
-    ActorController actorAiController;
+    private Controller controller;
+    private PlayerMovement2D playerInput;
+    private ActorBOIDController boidController;
+    private ActorController actorAiController;
     // private MovementHandler movementHandler; // This would be for AI actor movement but unused currently
 
     private void Start()
     {
         spriteRenderer.transform.localScale = new Vector2(16, 16); // Hacky adjust scale for pixel art
         
-        if (playerInput == null)
-            playerInput = TryGetComponent<PlayerInputHandler>(out playerInput) ? playerInput : null;
-        
-        if (actorAiController == null)
-            actorAiController = TryGetComponent<ActorController>(out actorAiController) ? actorAiController : null;
+            if (controller == null)
+                controller = GetComponent<PlayerMovement2D>() ?? 
+                             (Controller)GetComponent<ActorBOIDController>() ?? 
+                             GetComponent<ActorController>();
+            
+            playerInput = controller as PlayerMovement2D;
+            boidController = controller as ActorBOIDController;
+            actorAiController = controller as ActorController;
     }
 
     private void LateUpdate()
@@ -36,9 +41,13 @@ public class ActorAnimationController : MonoBehaviour
         
         // Get Actor Movement
         if (playerInput)
-            _moveDir = playerInput.GetMoveInput();
-        else
+            _moveDir = playerInput.InputHandler.GetMoveInput();
+        else if (actorAiController)
             _moveDir = actorAiController.GetMoveDir();
+        else if (boidController)
+            _moveDir = boidController.moveDir;
+        else
+            _moveDir = Vector2.zero; // Default to no movement if no input or AI controller found
 
         // Check for no movement and reset to idle sprite
             if (_moveDir == Vector2.zero)

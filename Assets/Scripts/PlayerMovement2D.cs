@@ -2,9 +2,9 @@ using Unity.FPS.Gameplay;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInputHandler))]
-public class PlayerMovement2D : MonoBehaviour
+public class PlayerMovement2D : Controller
 {
-    [SerializeField] PlayerInputHandler InputHandler = null;
+    [SerializeField] public PlayerInputHandler InputHandler = null;
     
     Vector2 moveDir = Vector2.zero;
     [SerializeField] float speed = 5.0f;

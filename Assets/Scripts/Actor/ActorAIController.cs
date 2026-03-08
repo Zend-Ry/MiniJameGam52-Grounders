@@ -5,11 +5,12 @@ enum SearchState
 {
     Idle,
     Blind,
-    Noise
+    Noise,
+    NotIt
 }
 
 [RequireComponent(typeof(ActorAnimationController))]
-public class ActorController : MonoBehaviour
+public class ActorController : Controller
 {
     private List<Transform> _actors;
     SearchState _searchState = SearchState.Idle;
@@ -110,7 +111,7 @@ public class ActorController : MonoBehaviour
     {
         // Get a list of all noise sources within the noiseHeardRadius and move towards the closest one
         // TODO: Change to NoiseMaker class
-        List<GameObject> noiseSources = new List<GameObject>(GameObject.FindGameObjectsWithTag("NoiseSource"));
+        List<NoiseMaker> noiseSources = new List<NoiseMaker>();
         
         
     }
