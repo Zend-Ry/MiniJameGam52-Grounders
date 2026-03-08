@@ -5,6 +5,8 @@ public class WhistleBlower : MonoBehaviour
     // the times will be measured in seconds
     [SerializeField] float minimumWaitTime = 2.0f;
     [SerializeField] float maximumWaitTime = 10.0f;
+    [SerializeField] float NoiseHeardRadius = 5.0f;
+    [SerializeField] ActorController actorController;
     float waitTime = 0f;
     float timer = 0.0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -12,7 +14,11 @@ public class WhistleBlower : MonoBehaviour
     {
         ResetTimer();
         // randomize the whistle blowers look direction for the first time
-        
+        SignalManager.MakeNoise.AddListener(MoveToSound);
+        if (!actorController) 
+        {
+            actorController = GetComponent<ActorController>();
+        }
     }
 
     // Update is called once per frame
@@ -23,6 +29,17 @@ public class WhistleBlower : MonoBehaviour
         {
             BlowWhistle();
         }
+    }
+
+    void MoveToSound(Vector3 noisePosition) 
+    {
+        if (!actorController)
+            return;
+
+        if ((actorController.transform.position - noisePosition).magnitude > NoiseHeardRadius)
+            return;
+
+        actorController.targetMoveLocation = noisePosition;
     }
 
     void ResetTimer() 

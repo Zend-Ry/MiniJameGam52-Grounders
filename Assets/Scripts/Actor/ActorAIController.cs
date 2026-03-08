@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 enum SearchState
@@ -18,7 +19,7 @@ public class ActorController : MonoBehaviour
     public Vector2 GetMoveDir() => moveDir;
     public Vector2 targetMoveLocation = Vector2.zero;
     [SerializeField] float speed = 5.0f;
-    
+
 
     // Blind variables
     [SerializeField] Vector2 blindSearchMinMax = new Vector2(1f, 3f); // Min and max radius for blind search
@@ -28,9 +29,8 @@ public class ActorController : MonoBehaviour
     float idleMaxDuration = 2.4f;
     private float currentIdleTimeout = 0f;
     float idleTimer = 0f;
-    
+
     // Noise variables
-    float noiseHeardRadius = 5f;
     [SerializeField] float noiseChance = 0.0005f;
     [SerializeField] NoiseMaker noiseMaker;
 
