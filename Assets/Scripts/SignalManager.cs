@@ -25,6 +25,7 @@ public static class SignalManager
 
 	// Debug
 	public static Signal WhistleBlown = new Signal();
+	public static Signal MakeNoise = new Signal();
 	public static Signal<string> SetDebugText = new Signal<string>();
 
 	public static Signal<int> TestTypedSignal = new Signal<int>();

@@ -19,6 +19,7 @@ public class ActorController : MonoBehaviour
     public Vector2 GetMoveDir() => moveDir;
     public Vector2 targetMoveLocation = Vector2.zero;
     [SerializeField] float speed = 5.0f;
+    
 
     // Blind variables
     [Range(0.1f, 3f)] float blindSearchRadius = 2f;
@@ -29,12 +30,16 @@ public class ActorController : MonoBehaviour
     public PatrolPath PatrolPath { get; set; }
     public float pathReachingRadius = 0.5f;
     private int _pathDestinationNodeIndex;
-
+    
+    [SerializeField] float noiseChance = 0.0005f;
+    [SerializeField] NoiseMaker noiseMaker;
 
     void Start()
     {
         _actors = new List<Transform>();
         SwitchStates(SearchState.Path);
+        if (!noiseMaker)
+            noiseMaker = GetComponent<NoiseMaker>();
     }
     void FixedUpdate()
     {
@@ -85,6 +90,12 @@ public class ActorController : MonoBehaviour
         Vector3 direction = (targetMoveLocation - (Vector2)transform.position).normalized;
         moveDir = direction;
         transform.position += (direction * (speed * Time.deltaTime));
+        float random = Random.Range(0.0f, 1.0f);
+        if (random <= noiseChance) 
+        {
+            if (noiseMaker)
+                noiseMaker.CreateNoise();
+        }
     }
 
     
