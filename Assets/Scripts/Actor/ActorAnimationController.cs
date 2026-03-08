@@ -113,7 +113,7 @@ public class ActorAnimationController : MonoBehaviour
         }
     }
 
-    public void DieBitch()
+    public void ActorFrozen()
     {
         death = true;
         spriteRenderer.sprite = deathSprites[_animationIndex + 1];

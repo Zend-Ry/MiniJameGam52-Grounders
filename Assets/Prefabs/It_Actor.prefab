@@ -153,7 +153,8 @@ MonoBehaviour:
   sidewaySprites:
   - {fileID: 21300000, guid: 943516a9ed5b1de42afc7471ac3568c6, type: 3}
   - {fileID: 21300000, guid: d4859a37510fd8a46a72ef5cebb7354f, type: 3}
-  deathSprites: []
+  deathSprites:
+  - {fileID: 21300000, guid: a19b52ecc082f294b9ef1d94297387c4, type: 3}
   spriteRenderer: {fileID: 526353442121619657}
 --- !u!114 &1417577422080132544
 MonoBehaviour:

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ActorBOIDController : Controller
 {
-    [SerializeField] float fleeRadius = 5f;
+    [SerializeField] float fleeRadius = 3f;
     [SerializeField] Vector2 safeAreaCenter = Vector2.zero;
     [SerializeField] float safeAreaRadius = 10f;
-    [SerializeField] float speed = 5f;
+    [SerializeField] float speed = 2.8f;
     [SerializeField] GameObject itActor;
 
     // Noise variables
@@ -17,6 +17,8 @@ public class ActorBOIDController : Controller
     List<GameObject> safeAreas = new List<GameObject>();
     
     public Vector2 moveDir = Vector2.zero;
+    
+    float timeFleeing = 0f;
 
     private void Start()
     {
@@ -37,6 +39,9 @@ public class ActorBOIDController : Controller
             {
                 // Flee from IT Actor
                 moveDir = directionToItActor.normalized;
+                noiseChance = 0.0005f + (timeFleeing * 0.01f); // Increase noise chance when fleeing over time
+                timeFleeing += Time.deltaTime;
+                Debug.Log("Chance to make noise while fleeing: " + noiseChance);
             }
             else
             {
@@ -52,6 +57,8 @@ public class ActorBOIDController : Controller
                 {
                     moveDir = Vector2.zero; // Stay idle in the safe area
                 }
+                
+                noiseChance = 0.0005f;
             }
         }
     

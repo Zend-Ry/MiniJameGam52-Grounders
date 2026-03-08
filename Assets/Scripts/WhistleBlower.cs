@@ -70,7 +70,7 @@ public class WhistleBlower : MonoBehaviour
 
         if (collision.gameObject.tag == "Actor")
         {
-            animController.DieBitch();
+            animController.ActorFrozen();
         }
         else if (collision.gameObject.tag == "Player") 
         {

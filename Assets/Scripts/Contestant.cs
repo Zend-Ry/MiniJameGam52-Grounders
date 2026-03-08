@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Contestant : MonoBehaviour
@@ -6,9 +7,15 @@ public class Contestant : MonoBehaviour
     [SerializeField] LayerMask groundLayer  = 0;
     [SerializeField] LayerMask environLayer = 0;
     LayerMask currentLayer = 0;
-    void Start()
+
+    private void Awake()
     {
         SignalManager.WhistleBlown.AddListener(Grounders);
+    }
+
+    void Start()
+    {
+        
         if (groundLayer == 0)
             groundLayer = LayerMask.NameToLayer("Ground");
 
@@ -31,7 +38,7 @@ public class Contestant : MonoBehaviour
 
         if (gameObject.tag == "Actor")
         {
-            animationController.DieBitch();
+            animationController.ActorFrozen();
         }
         else if (gameObject.tag == "Player") 
         {
