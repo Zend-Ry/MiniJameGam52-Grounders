@@ -12,7 +12,7 @@ public class PatrolPath : MonoBehaviour
     {
         foreach (var actor in actorPatroling)
         {
-            actor.patrolPath = this;
+            actor.PatrolPath = this;
         }
     }
 
