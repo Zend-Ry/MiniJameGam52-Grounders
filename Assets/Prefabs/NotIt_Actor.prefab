@@ -249,7 +249,7 @@ GameObject:
   - component: {fileID: 2290048236838782265}
   m_Layer: 0
   m_Name: NotIt_Actor
-  m_TagString: Untagged
+  m_TagString: Actor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -312,6 +312,7 @@ MonoBehaviour:
   safeAreaRadius: 10
   speed: 5
   itActor: {fileID: 0}
+  moveDir: {x: 0, y: 0}
 --- !u!61 &8180234761385170975
 BoxCollider2D:
   m_ObjectHideFlags: 0

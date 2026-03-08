@@ -53,4 +53,17 @@ public class WhistleBlower : MonoBehaviour
         SignalManager.WhistleBlown.Emit();
         ResetTimer();
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // shit ass way of doing this but im tired so idgaf
+        if (collision.gameObject.tag == "Actor") 
+        {
+            var animController = collision.gameObject.GetComponent<ActorAnimationController>();
+            if (animController) 
+            {
+                animController.DieBitch();
+            }
+        }
+    }
 }

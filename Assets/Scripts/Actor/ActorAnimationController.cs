@@ -1,3 +1,4 @@
+using NUnit.Framework.Interfaces;
 using System;
 using System.Collections.Generic;
 using Unity.FPS.Gameplay;
@@ -5,9 +6,10 @@ using UnityEngine;
 
 public class ActorAnimationController : MonoBehaviour
 {
-    [SerializeField] List<Sprite> upwardsSprites = new List<Sprite>(3);
-    [SerializeField] List<Sprite> downwardsSprites = new List<Sprite>(3);
-    [SerializeField] List<Sprite> sidewaySprites = new List<Sprite>(2);
+    [SerializeField] List<Sprite> upwardsSprites = new List<Sprite>();
+    [SerializeField] List<Sprite> downwardsSprites = new List<Sprite>();
+    [SerializeField] List<Sprite> sidewaySprites = new List<Sprite>();
+    [SerializeField] List<Sprite> deathSprites = new List<Sprite>();
 
     Vector2 _moveDir = Vector2.zero;
     [SerializeField] SpriteRenderer spriteRenderer;
@@ -19,6 +21,9 @@ public class ActorAnimationController : MonoBehaviour
     private PlayerMovement2D playerInput;
     private ActorBOIDController boidController;
     private ActorController actorAiController;
+    bool death;
+    float deathTimer = 2.0f;
+    float timer = 0.0f;
     // private MovementHandler movementHandler; // This would be for AI actor movement but unused currently
 
     private void Start()
@@ -38,7 +43,13 @@ public class ActorAnimationController : MonoBehaviour
     private void LateUpdate()
     {
         Animate();
-        
+        if (death == true) 
+        {
+            timer += Time.deltaTime;
+            if(timer > deathTimer)
+                gameObject.SetActive(false);
+            return;
+        }
         // Get Actor Movement
         if (playerInput)
             _moveDir = playerInput.InputHandler.GetMoveInput();
@@ -67,12 +78,12 @@ public class ActorAnimationController : MonoBehaviour
                     spriteRenderer.sprite = downwardsSprites[_animationIndex + 1];
                     break;
                 case var v when v.x > 0:
-                    _animationIndex = (_animationIndex + 1) % sidewaySprites.Count;
+                    _animationIndex = (_animationIndex + 1);
                     spriteRenderer.sprite = sidewaySprites[_animationIndex];
                     spriteRenderer.flipX = false;
                     break;
                 case var v when v.x < 0:
-                    _animationIndex = (_animationIndex + 1) % sidewaySprites.Count;
+                    _animationIndex = (_animationIndex + 1);
                     spriteRenderer.sprite = sidewaySprites[_animationIndex];
                     spriteRenderer.flipX = true;
                     break;
@@ -88,7 +99,14 @@ public class ActorAnimationController : MonoBehaviour
             _animationIndex = (_animationIndex + 1) % 2;
         }
     }
-    
+
+    public void DieBitch() 
+    {
+        death = true;
+        spriteRenderer.sprite = deathSprites[_animationIndex + 1];
+
+    }
+
     private void SetAnimTimer(float time)
     {
         _animationTimer = time;

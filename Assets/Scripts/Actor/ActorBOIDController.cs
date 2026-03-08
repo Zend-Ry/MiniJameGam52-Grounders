@@ -38,7 +38,7 @@ public class ActorBOIDController : Controller
                 //FindClosestSafeArea();
                 
                 // Move towards the safe area if outside
-                Vector2 directionToSafeArea = safeAreaCenter - (Vector2)transform.position;
+                Vector2 directionToSafeArea = FindClosestSafeArea() - (Vector2)transform.position;
                 if (directionToSafeArea.magnitude > safeAreaRadius)
                 {
                     moveDir = directionToSafeArea.normalized;
@@ -53,7 +53,23 @@ public class ActorBOIDController : Controller
         // Apply movement
         transform.position += (Vector3)(moveDir * (speed * Time.deltaTime));
     }
-    
+
+    Vector2 FindClosestSafeArea() 
+    {
+        float currentMagnitude = float.MaxValue;
+        float itMagnitude = (itActor.transform.position - transform.position).magnitude;
+        foreach (var area in safeAreas) 
+        {
+            float areaMag = (area.transform.position - transform.position).magnitude;
+            if (areaMag < currentMagnitude && areaMag > itMagnitude) 
+            {
+                safeAreaCenter = area.transform.position;
+                currentMagnitude = areaMag;
+            }
+        }
+        return safeAreaCenter;
+    }
+
     void OnDrawGizmosSelected()
     {
         // Visualize flee radius
