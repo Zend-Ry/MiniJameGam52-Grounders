@@ -83,11 +83,6 @@ public class ActorController : MonoBehaviour
 
     
     // Blind Search state methods
-    void EndBlindSearch()
-    {
-        Debug.Log("Blind search ended, switching to path search");
-        //_searchState = SearchState.Path;
-    }
     Vector3 GetRandomPointInBlindRadius()
     {
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
