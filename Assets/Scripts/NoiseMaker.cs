@@ -12,6 +12,6 @@ public class NoiseMaker : MonoBehaviour
     public void CreateNoise() 
     {
         source.Play();
-        SignalManager.MakeNoise.Emit();
+        SignalManager.MakeNoise.Emit(transform.position);
     }
 }
