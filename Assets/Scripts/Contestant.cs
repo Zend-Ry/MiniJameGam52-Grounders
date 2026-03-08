@@ -30,18 +30,23 @@ public class Contestant : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        var bitlayer = 1 << collision.gameObject.layer;
-        var comps = bitlayer & environLayer;
-        var glayer = 1 << groundLayer;
+        // if the layer bit values matches the environment layer bit values
+        if (((1 << collision.gameObject.layer) & environLayer) == (1 << collision.gameObject.layer))
+        {
+            currentLayer = environLayer;
+        }
         // if the layer bit values matches the ground layer bit values
-        if ( ( (1 << collision.gameObject.layer) & groundLayer) == (1 << collision.gameObject.layer) )
+        else if ( ( (1 << collision.gameObject.layer) & groundLayer) == (1 << collision.gameObject.layer) )
         {
             currentLayer = groundLayer;
         }
-        // if the layer bit values matches the environment layer bit values
-        else if ( ( (1 << collision.gameObject.layer) & environLayer) == (1 << collision.gameObject.layer) )
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) 
+    {
+        if (((1 << collision.gameObject.layer) & environLayer) == (1 << collision.gameObject.layer)) 
         {
-            currentLayer = environLayer;
+            currentLayer = groundLayer;
         }
     }
 }

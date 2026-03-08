@@ -34,6 +34,6 @@ public class PlayerMovement2D : MonoBehaviour
         moveDir = InputHandler.GetMoveInput();
         Vector2 position = transform.position;
         position += moveDir * speed * Time.deltaTime;
-        transform.position = position;
+        transform.position = new Vector3(position.x, position.y, transform.position.z);
     }
 }
