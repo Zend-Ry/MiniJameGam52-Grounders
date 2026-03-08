@@ -10,7 +10,7 @@ enum SearchState
     NotIt
 }
 
-[RequireComponent(typeof(ActorAnimationController))]
+[RequireComponent(typeof(ActorAnimationController), typeof(AudioSource))]
 public class ActorController : Controller
 {
     private List<Transform> _actors;
@@ -33,6 +33,12 @@ public class ActorController : Controller
     // Noise variables
     [SerializeField] float noiseChance = 0.0005f;
     [SerializeField] NoiseMaker noiseMaker;
+    
+    [SerializeField] private AudioClip footstepClip;
+    [SerializeField] private AudioSource audioSource;
+    
+    [SerializeField] float chosenFootstepSfxFrequency = 0.3f; // This can be adjusted to change how often the footstep sound plays
+    float m_FootstepDistanceCounter = 0f; // Counter to track distance for footstep sounds
 
     void Start()
     {
@@ -85,6 +91,17 @@ public class ActorController : Controller
         moveDir = direction;
         transform.position += (direction * (speed * Time.deltaTime));
         float random = Random.Range(0.0f, 1.0f);
+        
+        // Play footstep sound based on distance traveled
+        if (m_FootstepDistanceCounter >= 1f * chosenFootstepSfxFrequency)
+        {
+            m_FootstepDistanceCounter = 0f;
+            audioSource.PlayOneShot(footstepClip);
+        }
+        
+        if (moveDir.magnitude > 0)
+            m_FootstepDistanceCounter += moveDir.magnitude * Time.deltaTime;
+        
         if (random <= noiseChance) 
         {
             if (noiseMaker)

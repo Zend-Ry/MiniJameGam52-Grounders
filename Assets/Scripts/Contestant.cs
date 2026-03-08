@@ -47,6 +47,7 @@ public class Contestant : MonoBehaviour
         else if (gameObject.tag == "Player") 
         {
             animationController.PlayerEgoDeath();
+            gameObject.GetComponent<PlayerInputHandler>().DisableMoveInput(); // Disable input
         }
         
     }

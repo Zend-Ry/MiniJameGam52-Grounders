@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class ActorBOIDController : Controller
 {
     [SerializeField] float fleeRadius = 3f;
@@ -19,6 +20,12 @@ public class ActorBOIDController : Controller
     List<GameObject> safeAreas = new List<GameObject>();
     
     public Vector2 moveDir = Vector2.zero;
+    
+    [SerializeField] private AudioClip footstepClip;
+    [SerializeField] private AudioSource audioSource;
+    
+    [SerializeField] float chosenFootstepSfxFrequency = 0.3f; // This can be adjusted to change how often the footstep sound plays
+    float m_FootstepDistanceCounter = 0f; // Counter to track distance for footstep sounds
     
     float timeFleeing = 0f;
 
@@ -68,6 +75,18 @@ public class ActorBOIDController : Controller
     
         // Apply movement
         transform.position += (Vector3)(moveDir * (speed * Time.deltaTime));
+        
+        // Play footstep sound based on distance traveled
+        if (m_FootstepDistanceCounter >= 1f * chosenFootstepSfxFrequency)
+        {
+            m_FootstepDistanceCounter = 0f;
+            audioSource.PlayOneShot(footstepClip);
+        }
+        
+        if (moveDir.magnitude > 0)
+            m_FootstepDistanceCounter += moveDir.magnitude * Time.deltaTime;
+
+        
         float random = UnityEngine.Random.Range(0.0f, 1.0f);
         if (random <= noiseChance)
         {

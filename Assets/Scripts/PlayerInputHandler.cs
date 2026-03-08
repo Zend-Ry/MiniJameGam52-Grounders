@@ -18,7 +18,12 @@ namespace Unity.FPS.Gameplay
             
             _mMoveAction.Enable();
         }
-        
+
+        public void DisableMoveInput()
+        {
+            _mMoveAction.Disable();
+        }
+
         // Movement Interactions
         public Vector2 GetMoveInput()
         {

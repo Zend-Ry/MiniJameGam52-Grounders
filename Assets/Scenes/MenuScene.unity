@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StartMenuUI
       objectReference: {fileID: 0}
+    - target: {fileID: 1027250812461764462, guid: 18fd4dcb5c9843c48a5195a7377749cb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -84
+      objectReference: {fileID: 0}
     - target: {fileID: 4104458661648929607, guid: 18fd4dcb5c9843c48a5195a7377749cb, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -258,6 +262,10 @@ PrefabInstance:
     - target: {fileID: 7026155444310014805, guid: 18fd4dcb5c9843c48a5195a7377749cb, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7929554384255563171, guid: 18fd4dcb5c9843c48a5195a7377749cb, type: 3}
+      propertyPath: m_margin.x
+      value: -74.89714
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

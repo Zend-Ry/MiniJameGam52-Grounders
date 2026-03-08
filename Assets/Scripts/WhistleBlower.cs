@@ -70,17 +70,15 @@ public class WhistleBlower : MonoBehaviour
         // shit ass way of doing this but im tired so idgaf
         var animController = collision.gameObject.GetComponent<ActorAnimationController>();
 
-        if (animController == null)
-            return;
-
         if (collision.gameObject.tag == "Actor")
         {
             animController.ActorFrozen();
-            gameObject.GetComponent<ActorBOIDController>().isActive = false; // Disable AI
+            collision.gameObject.GetComponent<ActorBOIDController>().isActive = false; // Disable AI
         }
         else if (collision.gameObject.tag == "Player")
         {
             animController.PlayerEgoDeath();
+            collision.gameObject.GetComponent<PlayerInputHandler>().DisableMoveInput(); // Disable input
         }
     }
 }
