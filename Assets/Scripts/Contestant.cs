@@ -22,9 +22,21 @@ public class Contestant : MonoBehaviour
             return;
 
         // Play Freeze Animation
-            // Freeze Animation disables gameObject at the end of animation
-                // if the target is player, change to main menu scene
-        gameObject.SetActive(false);
+        // Freeze Animation disables gameObject at the end of animation
+        // if the target is player, change to main menu scene
+
+        var animationController = GetComponent<ActorAnimationController>();
+        if (animationController == null)
+            return;
+
+        if (gameObject.tag == "Actor")
+        {
+            animationController.DieBitch();
+        }
+        else if (gameObject.tag == "Player") 
+        {
+            animationController.PlayerEgoDeath();
+        }
         
     }
 

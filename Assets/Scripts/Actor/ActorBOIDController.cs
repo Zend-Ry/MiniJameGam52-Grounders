@@ -9,6 +9,11 @@ public class ActorBOIDController : Controller
     [SerializeField] float safeAreaRadius = 10f;
     [SerializeField] float speed = 5f;
     [SerializeField] GameObject itActor;
+
+    // Noise variables
+    [SerializeField] float noiseChance = 0.0005f;
+    [SerializeField] NoiseMaker noiseMaker;
+
     List<GameObject> safeAreas = new List<GameObject>();
     
     public Vector2 moveDir = Vector2.zero;
@@ -52,6 +57,12 @@ public class ActorBOIDController : Controller
     
         // Apply movement
         transform.position += (Vector3)(moveDir * (speed * Time.deltaTime));
+        float random = UnityEngine.Random.Range(0.0f, 1.0f);
+        if (random <= noiseChance)
+        {
+            if (noiseMaker)
+                noiseMaker.CreateNoise();
+        }
     }
 
     Vector2 FindClosestSafeArea() 
@@ -61,7 +72,7 @@ public class ActorBOIDController : Controller
         foreach (var area in safeAreas) 
         {
             float areaMag = (area.transform.position - transform.position).magnitude;
-            if (areaMag < currentMagnitude && areaMag > itMagnitude) 
+            if (areaMag < currentMagnitude/* && areaMag > itMagnitude*/) 
             {
                 safeAreaCenter = area.transform.position;
                 currentMagnitude = areaMag;

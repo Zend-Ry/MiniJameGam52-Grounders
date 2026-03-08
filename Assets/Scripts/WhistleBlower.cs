@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using static Unity.VisualScripting.Member;
+[RequireComponent(typeof(AudioSource))]
 public class WhistleBlower : MonoBehaviour
 {
     // the times will be measured in seconds
@@ -7,6 +8,8 @@ public class WhistleBlower : MonoBehaviour
     [SerializeField] float maximumWaitTime = 10.0f;
     [SerializeField] float NoiseHeardRadius = 5.0f;
     [SerializeField] ActorController actorController;
+    [SerializeField] AudioSource source;
+
     float waitTime = 0f;
     float timer = 0.0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -19,6 +22,8 @@ public class WhistleBlower : MonoBehaviour
         {
             actorController = GetComponent<ActorController>();
         }
+        if(!source)
+            source = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -51,19 +56,25 @@ public class WhistleBlower : MonoBehaviour
     void BlowWhistle() 
     {
         SignalManager.WhistleBlown.Emit();
+        source.Play();
         ResetTimer();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // shit ass way of doing this but im tired so idgaf
-        if (collision.gameObject.tag == "Actor") 
+        var animController = collision.gameObject.GetComponent<ActorAnimationController>();
+
+        if (animController == null)
+            return;
+
+        if (collision.gameObject.tag == "Actor")
         {
-            var animController = collision.gameObject.GetComponent<ActorAnimationController>();
-            if (animController) 
-            {
-                animController.DieBitch();
-            }
+            animController.DieBitch();
+        }
+        else if (collision.gameObject.tag == "Player") 
+        {
+            animController.PlayerEgoDeath();
         }
     }
 }

@@ -144,9 +144,9 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 0
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 20
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -181,7 +181,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -247,6 +247,7 @@ GameObject:
   - component: {fileID: 1685945318889425968}
   - component: {fileID: 8180234761385170975}
   - component: {fileID: 2290048236838782265}
+  - component: {fileID: 5297301223524314995}
   m_Layer: 0
   m_Name: NotIt_Actor
   m_TagString: Actor
@@ -294,6 +295,7 @@ MonoBehaviour:
   sidewaySprites:
   - {fileID: 21300000, guid: 943516a9ed5b1de42afc7471ac3568c6, type: 3}
   - {fileID: 21300000, guid: d4859a37510fd8a46a72ef5cebb7354f, type: 3}
+  deathSprites: []
   spriteRenderer: {fileID: 526353442121619657}
 --- !u!114 &1685945318889425968
 MonoBehaviour:
@@ -312,6 +314,8 @@ MonoBehaviour:
   safeAreaRadius: 10
   speed: 5
   itActor: {fileID: 0}
+  noiseChance: 0.0005
+  noiseMaker: {fileID: 1294798579534979611}
   moveDir: {x: 0, y: 0}
 --- !u!61 &8180234761385170975
 BoxCollider2D:
@@ -386,3 +390,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &5297301223524314995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8804682404311521787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ae616fb54561fc48aef72807d2eda1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Contestant
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  environLayer:
+    serializedVersion: 2
+    m_Bits: 128

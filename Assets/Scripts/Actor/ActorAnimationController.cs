@@ -1,15 +1,15 @@
-using NUnit.Framework.Interfaces;
 using System;
 using System.Collections.Generic;
 using Unity.FPS.Gameplay;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ActorAnimationController : MonoBehaviour
 {
-    [SerializeField] List<Sprite> upwardsSprites = new List<Sprite>();
-    [SerializeField] List<Sprite> downwardsSprites = new List<Sprite>();
-    [SerializeField] List<Sprite> sidewaySprites = new List<Sprite>();
-    [SerializeField] List<Sprite> deathSprites = new List<Sprite>();
+    [SerializeField] List<Sprite> upwardsSprites = new List<Sprite>(3);
+    [SerializeField] List<Sprite> downwardsSprites = new List<Sprite>(3);
+    [SerializeField] List<Sprite> sidewaySprites = new List<Sprite>(2);
+    [SerializeField] List<Sprite> deathSprites = new List<Sprite>(2);
 
     Vector2 _moveDir = Vector2.zero;
     [SerializeField] SpriteRenderer spriteRenderer;
@@ -22,8 +22,9 @@ public class ActorAnimationController : MonoBehaviour
     private ActorBOIDController boidController;
     private ActorController actorAiController;
     bool death;
-    float deathTimer = 2.0f;
-    float timer = 0.0f;
+    bool playerEgoDeath;
+    float deathTimer;
+    float timer;
     // private MovementHandler movementHandler; // This would be for AI actor movement but unused currently
 
     private void Start()
@@ -43,13 +44,25 @@ public class ActorAnimationController : MonoBehaviour
     private void LateUpdate()
     {
         Animate();
-        if (death == true) 
+        if (death == true)
         {
             timer += Time.deltaTime;
-            if(timer > deathTimer)
+            if (timer > deathTimer)
                 gameObject.SetActive(false);
             return;
         }
+        else if (playerEgoDeath == true)
+        {
+            timer += Time.deltaTime;
+            if (timer > deathTimer)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                SceneManager.LoadScene(0);
+            }
+            return;
+        }
+
         // Get Actor Movement
         if (playerInput)
             _moveDir = playerInput.InputHandler.GetMoveInput();
@@ -78,12 +91,12 @@ public class ActorAnimationController : MonoBehaviour
                     spriteRenderer.sprite = downwardsSprites[_animationIndex + 1];
                     break;
                 case var v when v.x > 0:
-                    _animationIndex = (_animationIndex + 1);
+                    _animationIndex = (_animationIndex + 1) % sidewaySprites.Count;
                     spriteRenderer.sprite = sidewaySprites[_animationIndex];
                     spriteRenderer.flipX = false;
                     break;
                 case var v when v.x < 0:
-                    _animationIndex = (_animationIndex + 1);
+                    _animationIndex = (_animationIndex + 1) % sidewaySprites.Count;
                     spriteRenderer.sprite = sidewaySprites[_animationIndex];
                     spriteRenderer.flipX = true;
                     break;
@@ -100,11 +113,17 @@ public class ActorAnimationController : MonoBehaviour
         }
     }
 
-    public void DieBitch() 
+    public void DieBitch()
     {
         death = true;
         spriteRenderer.sprite = deathSprites[_animationIndex + 1];
 
+    }
+
+    public void PlayerEgoDeath()
+    {
+        playerEgoDeath = true;
+        spriteRenderer.sprite = deathSprites[_animationIndex + 1];
     }
 
     private void SetAnimTimer(float time)
