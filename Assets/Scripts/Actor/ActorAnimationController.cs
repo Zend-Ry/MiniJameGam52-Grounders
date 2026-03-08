@@ -16,6 +16,7 @@ public class ActorAnimationController : MonoBehaviour
     private int _animationIndex = 0;
 
     PlayerInputHandler playerInput;
+    ActorController actorAiController;
     // private MovementHandler movementHandler; // This would be for AI actor movement but unused currently
 
     private void Start()
@@ -24,6 +25,9 @@ public class ActorAnimationController : MonoBehaviour
         
         if (playerInput == null)
             playerInput = TryGetComponent<PlayerInputHandler>(out playerInput) ? playerInput : null;
+        
+        if (actorAiController == null)
+            actorAiController = TryGetComponent<ActorController>(out actorAiController) ? actorAiController : null;
     }
 
     private void LateUpdate()
@@ -32,10 +36,11 @@ public class ActorAnimationController : MonoBehaviour
         
         // Get Actor Movement
         if (playerInput)
-        {
             _moveDir = playerInput.GetMoveInput();
-            
-            // Check for no movement and reset to idle sprite
+        else
+            _moveDir = actorAiController.GetMoveDir();
+
+        // Check for no movement and reset to idle sprite
             if (_moveDir == Vector2.zero)
             {
                 // TODO: Change to last facing direction idle sprite
@@ -63,7 +68,6 @@ public class ActorAnimationController : MonoBehaviour
                     spriteRenderer.flipX = true;
                     break;
             }
-        }
     }
     
     private void Animate()
@@ -73,8 +77,6 @@ public class ActorAnimationController : MonoBehaviour
         {
             _animationTimer = 0f;
             _animationIndex = (_animationIndex + 1) % 2;
-            // This is where you would cycle through the sprites for animation based on the direction
-            // For example, if moving upwards, you would cycle through upwardsSprites list
         }
     }
     
