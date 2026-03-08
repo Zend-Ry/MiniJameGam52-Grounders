@@ -24,7 +24,6 @@ public class ActorController : Controller
 
     // Blind variables
     [SerializeField] Vector2 blindSearchMinMax = new Vector2(1f, 3f); // Min and max radius for blind search
-    float chanceToEndBlindSearch = 0.1f; // Chance to end blind search each frame, can be adjusted for more or less randomness in search duration
 
     // Idle variables
     float idleMaxDuration = 2.4f;
@@ -104,16 +103,6 @@ public class ActorController : Controller
     bool IsPointReached(Vector3 point)
     {
         return (transform.position - point).magnitude <= 0.1f;
-    }
-    
-    // Noise Search state methods
-    void GetNoiseWithinRadius()
-    {
-        // Get a list of all noise sources within the noiseHeardRadius and move towards the closest one
-        // TODO: Change to NoiseMaker class
-        List<NoiseMaker> noiseSources = new List<NoiseMaker>();
-        
-        
     }
 
     // Debug

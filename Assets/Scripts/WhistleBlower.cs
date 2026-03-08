@@ -1,3 +1,4 @@
+using Unity.FPS.Gameplay;
 using UnityEngine;
 using static Unity.VisualScripting.Member;
 [RequireComponent(typeof(AudioSource))]
@@ -70,7 +71,12 @@ public class WhistleBlower : MonoBehaviour
 
         if (collision.gameObject.tag == "Actor")
         {
-            animController.ActorFrozen();
+            ActorBOIDController comp = gameObject.GetComponent<ActorBOIDController>();
+            if (comp.isActive)
+            {
+                animController.ActorFrozen();
+                comp.isActive = false; // Disable AI
+            }
         }
         else if (collision.gameObject.tag == "Player") 
         {

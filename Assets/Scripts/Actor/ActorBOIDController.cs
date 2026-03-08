@@ -10,6 +10,8 @@ public class ActorBOIDController : Controller
     [SerializeField] float speed = 2.8f;
     [SerializeField] GameObject itActor;
 
+    public bool isActive = true;
+
     // Noise variables
     [SerializeField] float noiseChance = 0.0005f;
     [SerializeField] NoiseMaker noiseMaker;
@@ -19,6 +21,11 @@ public class ActorBOIDController : Controller
     public Vector2 moveDir = Vector2.zero;
     
     float timeFleeing = 0f;
+
+    private void Awake()
+    {
+        
+    }
 
     private void Start()
     {
@@ -32,6 +39,9 @@ public class ActorBOIDController : Controller
 
     void Update()
     {
+        if (!isActive)
+            return;
+        
         if (itActor != null)
         {
             Vector2 directionToItActor = (Vector2)(transform.position - itActor.transform.position);
@@ -41,7 +51,6 @@ public class ActorBOIDController : Controller
                 moveDir = directionToItActor.normalized;
                 noiseChance = 0.0005f + (timeFleeing * 0.01f); // Increase noise chance when fleeing over time
                 timeFleeing += Time.deltaTime;
-                Debug.Log("Chance to make noise while fleeing: " + noiseChance);
             }
             else
             {

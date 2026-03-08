@@ -79,7 +79,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 999
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 943516a9ed5b1de42afc7471ac3568c6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -310,11 +310,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7123aadc63a7ad643bbcbb8c867829b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActorBOIDController
-  fleeRadius: 5
+  fleeRadius: 3
   safeAreaCenter: {x: 0, y: 0}
-  safeAreaRadius: 10
-  speed: 5
+  safeAreaRadius: 4
+  speed: 3
   itActor: {fileID: 0}
+  isActive: 1
   noiseChance: 0.0005
   noiseMaker: {fileID: 1294798579534979611}
   moveDir: {x: 0, y: 0}

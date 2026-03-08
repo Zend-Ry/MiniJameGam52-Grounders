@@ -23,7 +23,7 @@ public class ActorAnimationController : MonoBehaviour
     private ActorController actorAiController;
     bool death;
     bool playerEgoDeath;
-    float deathTimer;
+    float deathTimeout = 2.4f; // time till scene reset after player death, allows time for death animation to play
     float timer;
     // private MovementHandler movementHandler; // This would be for AI actor movement but unused currently
 
@@ -44,17 +44,16 @@ public class ActorAnimationController : MonoBehaviour
     private void LateUpdate()
     {
         Animate();
-        if (death == true)
+        
+        if (death)
         {
-            timer += Time.deltaTime;
-            if (timer > deathTimer)
-                gameObject.SetActive(false);
             return;
         }
-        else if (playerEgoDeath == true)
+        
+        if (playerEgoDeath)
         {
             timer += Time.deltaTime;
-            if (timer > deathTimer)
+            if (timer > deathTimeout)
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
@@ -116,14 +115,13 @@ public class ActorAnimationController : MonoBehaviour
     public void ActorFrozen()
     {
         death = true;
-        spriteRenderer.sprite = deathSprites[_animationIndex + 1];
-
+        spriteRenderer.sprite = deathSprites[0];
     }
 
     public void PlayerEgoDeath()
     {
         playerEgoDeath = true;
-        spriteRenderer.sprite = deathSprites[_animationIndex + 1];
+        spriteRenderer.sprite = deathSprites[0];
     }
 
     private void SetAnimTimer(float time)

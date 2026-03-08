@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Unity.FPS.Gameplay;
 using UnityEngine;
 
 public class Contestant : MonoBehaviour
@@ -7,6 +9,8 @@ public class Contestant : MonoBehaviour
     [SerializeField] LayerMask groundLayer  = 0;
     [SerializeField] LayerMask environLayer = 0;
     LayerMask currentLayer = 0;
+    
+    [SerializeField] List<Collider> currentCollisions = new List<Collider>();
 
     private void Awake()
     {
@@ -39,6 +43,7 @@ public class Contestant : MonoBehaviour
         if (gameObject.tag == "Actor")
         {
             animationController.ActorFrozen();
+            gameObject.GetComponent<ActorBOIDController>().isActive = false; // Disable AI
         }
         else if (gameObject.tag == "Player") 
         {
@@ -46,26 +51,34 @@ public class Contestant : MonoBehaviour
         }
         
     }
-
+    
     private void OnTriggerEnter2D(Collider2D collision)
-    {
-        // if the layer bit values matches the environment layer bit values
-        if (((1 << collision.gameObject.layer) & environLayer) == (1 << collision.gameObject.layer))
-        {
-            currentLayer = environLayer;
-        }
-        // if the layer bit values matches the ground layer bit values
-        else if ( ( (1 << collision.gameObject.layer) & groundLayer) == (1 << collision.gameObject.layer) )
-        {
-            currentLayer = groundLayer;
-        }
+    { 
+        // Debug.Log("Enter | A: " + gameObject.name + " | C: " + collision.gameObject.name);
+        // // if the layer bit values matches the environment layer bit values
+        // if (((1 << collision.gameObject.layer) & environLayer) == (1 << collision.gameObject.layer))
+        // {
+        //     currentLayer = environLayer;
+        // }
+        // // if the layer bit values matches the ground layer bit values
+        // else if ( ( (1 << collision.gameObject.layer) & groundLayer) == (1 << collision.gameObject.layer) )
+        // {
+        //     currentLayer = groundLayer;
+        // }
+        // Debug.Log("CL@End: " + currentLayer.value);
+        
+        currentCollisions.Add(collision.GetComponent<Collider>());
     }
 
     private void OnTriggerExit2D(Collider2D collision) 
     {
-        if (((1 << collision.gameObject.layer) & environLayer) == (1 << collision.gameObject.layer)) 
-        {
-            currentLayer = groundLayer;
-        }
+        //Debug.Log("Exit | A: " + gameObject.name + " | C: " + collision.gameObject.name);
+        //if (((1 << collision.gameObject.layer) & environLayer) == (1 << collision.gameObject.layer)) 
+        //{
+        //    currentLayer = groundLayer;
+        //}
+        //Debug.Log("CL@End: " + currentLayer.value);
+        
+        currentCollisions.Remove(collision.GetComponent<Collider>());
     }
 }
