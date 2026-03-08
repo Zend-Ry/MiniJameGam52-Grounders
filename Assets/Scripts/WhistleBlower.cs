@@ -1,6 +1,7 @@
 using Unity.FPS.Gameplay;
 using UnityEngine;
 using static Unity.VisualScripting.Member;
+
 [RequireComponent(typeof(AudioSource))]
 public class WhistleBlower : MonoBehaviour
 {
@@ -12,18 +13,21 @@ public class WhistleBlower : MonoBehaviour
     [SerializeField] AudioSource source;
 
     float waitTime = 0f;
+
     float timer = 0.0f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         ResetTimer();
         // randomize the whistle blowers look direction for the first time
         SignalManager.MakeNoise.AddListener(MoveToSound);
-        if (!actorController) 
+        if (!actorController)
         {
             actorController = GetComponent<ActorController>();
         }
-        if(!source)
+
+        if (!source)
             source = GetComponent<AudioSource>();
     }
 
@@ -31,13 +35,13 @@ public class WhistleBlower : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if (timer >= waitTime) 
+        if (timer >= waitTime)
         {
             BlowWhistle();
         }
     }
 
-    void MoveToSound(Vector3 noisePosition) 
+    void MoveToSound(Vector3 noisePosition)
     {
         if (!actorController)
             return;
@@ -48,13 +52,13 @@ public class WhistleBlower : MonoBehaviour
         actorController.targetMoveLocation = noisePosition;
     }
 
-    void ResetTimer() 
+    void ResetTimer()
     {
         waitTime = Random.Range(minimumWaitTime, maximumWaitTime);
         timer = 0.0f;
     }
 
-    void BlowWhistle() 
+    void BlowWhistle()
     {
         SignalManager.WhistleBlown.Emit();
         source.Play();
@@ -71,14 +75,10 @@ public class WhistleBlower : MonoBehaviour
 
         if (collision.gameObject.tag == "Actor")
         {
-            ActorBOIDController comp = gameObject.GetComponent<ActorBOIDController>();
-            if (comp.isActive)
-            {
-                animController.ActorFrozen();
-                comp.isActive = false; // Disable AI
-            }
+            animController.ActorFrozen();
+            gameObject.GetComponent<ActorBOIDController>().isActive = false; // Disable AI
         }
-        else if (collision.gameObject.tag == "Player") 
+        else if (collision.gameObject.tag == "Player")
         {
             animController.PlayerEgoDeath();
         }

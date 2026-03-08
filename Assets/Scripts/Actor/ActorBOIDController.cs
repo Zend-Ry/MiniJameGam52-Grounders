@@ -22,11 +22,6 @@ public class ActorBOIDController : Controller
     
     float timeFleeing = 0f;
 
-    private void Awake()
-    {
-        
-    }
-
     private void Start()
     {
         // Find all safe areas in the scene (tagged as "SafeArea")
@@ -88,7 +83,7 @@ public class ActorBOIDController : Controller
         foreach (var area in safeAreas) 
         {
             float areaMag = (area.transform.position - transform.position).magnitude;
-            if (areaMag < currentMagnitude/* && areaMag > itMagnitude*/) 
+            if (areaMag < currentMagnitude /*&& areaMag > itMagnitude * 2f*/)
             {
                 safeAreaCenter = area.transform.position;
                 currentMagnitude = areaMag;

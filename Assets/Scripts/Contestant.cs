@@ -6,8 +6,8 @@ using UnityEngine;
 public class Contestant : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] LayerMask groundLayer  = 0;
-    [SerializeField] LayerMask environLayer = 0;
+    /*[SerializeField] LayerMask groundLayer  = 0;
+    [SerializeField] LayerMask environLayer = 0;*/
     LayerMask currentLayer = 0;
     
     [SerializeField] List<Collider> currentCollisions = new List<Collider>();
@@ -19,17 +19,16 @@ public class Contestant : MonoBehaviour
 
     void Start()
     {
-        
-        if (groundLayer == 0)
+        /*if (groundLayer == 0)
             groundLayer = LayerMask.NameToLayer("Ground");
 
         if (environLayer == 0)
-            environLayer = LayerMask.NameToLayer("Environment");
+            environLayer = LayerMask.NameToLayer("Environment");*/
     }
 
     void Grounders() 
     {
-        if(currentLayer.value != groundLayer.value)
+        if(currentCollisions.Count > 0)
             return;
 
         // Play Freeze Animation
