@@ -27,6 +27,10 @@ public class PlayerMovement2D : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
+        UpdatePlayerPosition();
+    }
+    void UpdatePlayerPosition() 
+    {
         moveDir = InputHandler.GetMoveInput();
         Vector2 position = transform.position;
         position += moveDir * speed * Time.deltaTime;

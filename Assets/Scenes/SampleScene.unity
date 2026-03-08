@@ -251,9 +251,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7002526259886543548, guid: c6ad67cfca334254ea0cd8615fd1fcff, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7465364842127870541, guid: c6ad67cfca334254ea0cd8615fd1fcff, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7465364842127870541, guid: c6ad67cfca334254ea0cd8615fd1fcff, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055877639289137926, guid: c6ad67cfca334254ea0cd8615fd1fcff, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -436,6 +448,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1257930706}
   - component: {fileID: 1257930705}
+  - component: {fileID: 1257930707}
   m_Layer: 0
   m_Name: Triangle
   m_TagString: Untagged
@@ -517,6 +530,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1257930707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257930704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af517f530e8b843459c9eab1415a6310, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhistleBlower
+  minimumWaitTime: 2
+  maximumWaitTime: 10
 --- !u!1 &1432253800
 GameObject:
   m_ObjectHideFlags: 0
