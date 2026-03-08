@@ -5,8 +5,7 @@ enum SearchState
 {
     Idle,
     Blind,
-    Noise,
-    Path
+    Noise
 }
 
 [RequireComponent(typeof(ActorAnimationController))]
@@ -22,24 +21,25 @@ public class ActorController : MonoBehaviour
     
 
     // Blind variables
-    [Range(0.1f, 3f)] float blindSearchRadius = 2f;
-
+    [SerializeField] Vector2 blindSearchMinMax = new Vector2(1f, 3f); // Min and max radius for blind search
     float chanceToEndBlindSearch = 0.1f; // Chance to end blind search each frame, can be adjusted for more or less randomness in search duration
 
-    // Path variables
-    public PatrolPath PatrolPath { get; set; }
-    public float pathReachingRadius = 0.5f;
-    private int _pathDestinationNodeIndex;
+    // Idle variables
+    float idleMaxDuration = 2.4f;
+    private float currentIdleTimeout = 0f;
+    float idleTimer = 0f;
     
+    // Noise variables
+    float noiseHeardRadius = 5f;
     [SerializeField] float noiseChance = 0.0005f;
     [SerializeField] NoiseMaker noiseMaker;
 
     void Start()
     {
         _actors = new List<Transform>();
-        SwitchStates(SearchState.Path);
         if (!noiseMaker)
             noiseMaker = GetComponent<NoiseMaker>();
+        SwitchStates(SearchState.Blind);
     }
     void FixedUpdate()
     {
@@ -50,24 +50,21 @@ public class ActorController : MonoBehaviour
                 if (!IsPointReached(targetMoveLocation))
                     MoveTowardTarget();
                 else
-                    targetMoveLocation = GetRandomPointInBlindRadius();
+                    _searchState = SearchState.Idle;
+                    currentIdleTimeout = Random.Range(0f, idleMaxDuration); // Randomize idle duration after each blind search
                 break;
             case SearchState.Noise:
                 break;
-            case SearchState.Path:
-                UpdatePathDestination();
-                MoveTowardTarget();
-                break;
         }
-
-        // Attempt to end if in blind search
-        if (_searchState == SearchState.Blind)
+        
+        if (_searchState == SearchState.Idle)
         {
-            float rand = Random.value;
-            Debug.Log("rand: " + rand + " | Chance:  " + chanceToEndBlindSearch * (Time.deltaTime / 100f));
-            if (rand <= chanceToEndBlindSearch * Time.deltaTime)
+            idleTimer += Time.deltaTime;
+            if (idleTimer >= idleMaxDuration || idleTimer > currentIdleTimeout)
             {
-                EndBlindSearch();
+                targetMoveLocation = GetRandomPointInBlindRadius();
+                SwitchStates(SearchState.Blind);
+                idleTimer = 0f;
             }
         }
     }
@@ -79,9 +76,6 @@ public class ActorController : MonoBehaviour
             case SearchState.Blind:
                 break;
             case SearchState.Noise:
-                break;
-            case SearchState.Path:
-                OnPathStateAssigned();
                 break;
         }
     }
@@ -103,91 +97,23 @@ public class ActorController : MonoBehaviour
     void EndBlindSearch()
     {
         Debug.Log("Blind search ended, switching to path search");
-        _searchState = SearchState.Path;
-         SetPathDestinationToClosest();
+        //_searchState = SearchState.Path;
     }
     Vector3 GetRandomPointInBlindRadius()
     {
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
-        float randomDistance = Random.Range(0f, blindSearchRadius);
+        float randomDistance = Random.Range(blindSearchMinMax.x, blindSearchMinMax.y);
         return (Vector3)(randomDirection * randomDistance) + transform.position;
     }
     bool IsPointReached(Vector3 point)
     {
         return (transform.position - point).magnitude <= 0.1f;
     }
-
-    // Path Search state methods
-    // TODO: FIX METHODS THEY ARE CONFUSING
-    void OnPathStateAssigned()
+    
+    // Noise Search state methods
+    void GetNoiseWithinRadius()
     {
-        if (IsPathValid())
-        {
-            SetPathDestinationToClosest();
-            targetMoveLocation = GetDestinationOnPath() - transform.position;
-        }
-    }
-
-    bool IsPathValid()
-    {
-        return PatrolPath != null && PatrolPath.PathNodes.Count > 0;
-    }
-
-    public void SetPathDestinationToClosest()
-    {
-        if (IsPathValid())
-        {
-            int closestPathNodeIndex = 0;
-            for (int i = 0; i < PatrolPath.PathNodes.Count; i++)
-            {
-                float distanceToPathNode = PatrolPath.GetDistanceToNode(transform.position, i);
-                if (distanceToPathNode < PatrolPath.GetDistanceToNode(transform.position, closestPathNodeIndex))
-                {
-                    closestPathNodeIndex = i;
-                }
-            }
-
-            _pathDestinationNodeIndex = closestPathNodeIndex;
-        }
-        else
-            _pathDestinationNodeIndex = 0;
-    }
-
-    public Vector3 GetDestinationOnPath()
-    {
-        if (IsPathValid())
-        {
-            return PatrolPath.GetPositionOfPathNode(_pathDestinationNodeIndex);
-        }
-
-        return transform.position;
-    }
-
-    public void UpdatePathDestination(bool inverseOrder = false)
-    {
-        if (IsPathValid())
-        {
-            // Check if reached the path destination
-            if ((transform.position - GetDestinationOnPath()).magnitude <= pathReachingRadius)
-            {
-                // Increment or decrement path destination index
-                _pathDestinationNodeIndex =
-                    inverseOrder ? (_pathDestinationNodeIndex - 1) : (_pathDestinationNodeIndex + 1);
-
-                if (_pathDestinationNodeIndex < 0)
-                {
-                    _pathDestinationNodeIndex += PatrolPath.PathNodes.Count;
-                }
-
-                if (_pathDestinationNodeIndex >= PatrolPath.PathNodes.Count)
-                {
-                    _pathDestinationNodeIndex -= PatrolPath.PathNodes.Count;
-                }
-
-                // Update the target move location
-                targetMoveLocation = GetDestinationOnPath();
-            }
-        }
+        
     }
 
     // Debug
