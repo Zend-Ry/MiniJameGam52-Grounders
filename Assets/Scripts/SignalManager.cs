@@ -5,9 +5,9 @@ public static class SignalManager
 {
 	public static class Input
 	{
-		//public static TypedSignal<Vector2> OnTapStarted = new TypedSignal<Vector2>();
-		//public static TypedSignal<Vector2> OnTapEnded = new TypedSignal<Vector2>();
-		//public static TypedSignal<Vector2> OnDrag = new TypedSignal<Vector2>();
+		//public static Signal<Vector2> OnTapStarted = new TypedSignal<Vector2>();
+		//public static Signal<Vector2> OnTapEnded = new TypedSignal<Vector2>();
+		//public static Signal<Vector2> OnDrag = new TypedSignal<Vector2>();
 	}
 	
 	//public static Signal OnInstantiateNode = new Signal();
@@ -24,6 +24,8 @@ public static class SignalManager
 
 
 	// Debug
+	public static Signal WhistleBlown = new Signal();
+	public static Signal MakeNoise = new Signal();
 	public static Signal<string> SetDebugText = new Signal<string>();
 
 	public static Signal<int> TestTypedSignal = new Signal<int>();
