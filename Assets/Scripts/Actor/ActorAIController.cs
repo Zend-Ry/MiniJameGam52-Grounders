@@ -102,6 +102,10 @@ public class ActorController : MonoBehaviour
     // Noise Search state methods
     void GetNoiseWithinRadius()
     {
+        // Get a list of all noise sources within the noiseHeardRadius and move towards the closest one
+        // TODO: Change to NoiseMaker class
+        List<GameObject> noiseSources = new List<GameObject>(GameObject.FindGameObjectsWithTag("NoiseSource"));
+        
         
     }
 
